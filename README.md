@@ -1,14 +1,18 @@
 Opetussovellus
 
-Sovelluksen avulla voidaan järjestää verkkokursseja, joissa on tekstimateriaalia ja automaattisesti tarkastettavia tehtäviä. Jokainen käyttäjä on opettaja tai opiskelija.
+Sovelluksessa voidaan luoda verkkokursseja ja osallistua verkkokursseille. 
+Verkkokurssilla on opetusmateriaalia ja automaattisesti tarkastettavia tehtäviä. 
+Sovelluksen käyttäjä on joko opettaja tai opiskelija.
 
 Sovelluksen ominaisuuksia:
 
-Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
+Käyttäjä voi luoda uuden tunnuksen, kirjautua sisään ja ulos.
+
 Opiskelija näkee listan kursseista ja voi liittyä kurssille.
-Opiskelija voi lukea kurssin tekstimateriaalia sekä ratkoa kurssin tehtäviä.
-Opiskelija pystyy näkemään tilaston, mitkä kurssin tehtävät hän on ratkonut.
-Opettaja pystyy luomaan uuden kurssin, muuttamaan olemassa olevaa kurssia ja poistamaan kurssin.
-Opettaja pystyy lisäämään kurssille tekstimateriaalia ja tehtäviä. Tehtävä voi olla ainakin monivalinta tai tekstikenttä, johon tulee kirjoittaa oikea vastaus.
-Opettaja pystyy näkemään kurssistaan tilaston, keitä opiskelijoita on kurssilla ja mitkä kurssin tehtävät kukin on ratkonut.
+Opiskelija voi lukea kurssin materiaalia ja tehdä kurssin tehtäviä.
+Opiskelija näkee tilaston suorittamistaan tehtävistä.
+
+Opettaja voi luoda uuden kurssin, muuttaa olemassa olevaa kurssia ja poistaa kurssin.
+Opettaja pystyy lisäämään kurssille materiaalia ja tehtäviä.
+Opettaja näkee kurssinsa opiskelijat ja heidän tekemät tehtävät.
 
