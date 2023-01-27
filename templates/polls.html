@@ -1,0 +1,10 @@
+<b>Verkkokurssi</b>
+<hr>
+<a href="/new">Tee uusi kysymys</a>
+<hr>
+{% for poll in polls %}
+Kysymys: {{ poll.topic }} <br>
+<a href="/poll/{{ poll.id }}">Vastaa kysymykseen</a> |
+<a href="/result/{{ poll.id }}">Näytä tulokset</a> <br>
+<hr>
+{% endfor %}
