@@ -1,4 +1,8 @@
-Opetussovellus
+Opetussovellus/harjoitustyö
+
+Sovellus toteutetaan Pythonilla Flask-kirjastolla käyttäen 
+PostgreSQL-tietokantaa,sekä GitHub- ja 
+Fly.io-palveluja.
 
 Sovelluksessa voidaan luoda verkkokursseja ja osallistua verkkokursseille. 
 Verkkokurssilla on opetusmateriaalia ja automaattisesti tarkastettavia tehtäviä. 
