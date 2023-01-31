@@ -1,17 +1,17 @@
 <title>Opetussovellus</title>
 <h1>Opetussovellus</h1>
-<b>Tervetuloa luomaan oma verkkokurssi!</b>
-
-{% if session.username %}
+<br>
+<b>Tervetuloa luomaan oma verkkokurssi!</br>
+<br>
+{% if session.user_id %}
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
-<a href="/logout">Kirjaudu ulos</a>
+<br>
+<a href="/new">Luo verkkokurssi</a> 
+<br>
+<br>
+ <a href="/logout">Kirjaudu ulos</a>
 {% else %}
-<form action="/login" method="POST">
-<p>Tunnus:<br>
-<input type="text" name="username"></p>
-<p>Salasana:<br>
-<input type="password" name="password"></p>
-<input type="submit" value="Kirjaudu">
-</form>
+<a href="/login">Kirjaudu sisään</a>
 {% endif %}
+
 
