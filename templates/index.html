@@ -4,14 +4,18 @@
 <b>Tervetuloa luomaan oma verkkokurssi!</br>
 <br>
 {% if session.user_id %}
-<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<p>Olet kirjautunut nimellä {{ session.user_username }}</p>
 <br>
-<a href="/new">Luo verkkokurssi</a> 
+<a href="/material">Luo verkkokurssi</a> 
 <br>
 <br>
  <a href="/logout">Kirjaudu ulos</a>
 {% else %}
 <a href="/login">Kirjaudu sisään</a>
 {% endif %}
+<br>
+<br>
+<br>
+<img src="/static/DSCN1748.jpeg" alt = "kukkia" height="240" width="320"\>
 
 

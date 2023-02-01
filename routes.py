@@ -40,6 +40,15 @@ def logout():
     users.logout()
     return redirect("/")
 
+@app.route("/material")
+def material():
+    return render_template("material.html")
+
+@app.route("/result2", methods=["POST"])
+def result2():
+    material = request.form["material"]
+    return render_template("result2.html", material=material)
+
 @app.route("/polls")
 def polls():
     sql = "SELECT id, topic FROM polls ORDER BY id DESC"
@@ -54,6 +63,10 @@ def new():
 
 @app.route("/create", methods=["POST"])
 def create():
+    user_id = users.user_id()
+    content = request.form["content"]
+    sql = "INSERT INTO material (content, user_id) VALUES (:content, :user_id)"    
+    db.session.execute(sql, {"content":content, "user_id":user_id})
     topic = request.form["topic"]
     sql = "INSERT INTO polls (topic) VALUES (:topic) RETURNING id"
     result = db.session.execute(sql, {"topic":topic})

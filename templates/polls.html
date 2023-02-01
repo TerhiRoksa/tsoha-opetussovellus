@@ -1,10 +1,13 @@
 <b>Verkkokurssi</b>
 <hr>
 <a href="/new">Tee uusi kysymys</a>
+<br>
+<a href="/result2">Takaisin opintomateriaaliin</a>
 <hr>
 {% for poll in polls %}
+{{poll.content}}
 Kysymys: {{ poll.topic }} <br>
 <a href="/poll/{{ poll.id }}">Vastaa kysymykseen</a> |
-<a href="/result/{{ poll.id }}">Näytä tulokset</a> <br>
+<a href="/result/{{ poll.id }}">Näytä vastaukset</a> <br>
 <hr>
 {% endfor %}

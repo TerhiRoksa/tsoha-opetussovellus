@@ -20,3 +20,9 @@ CREATE TABLE answers (
     id SERIAL PRIMARY KEY,
     choice_id INTEGER REFERENCES choices
 );
+
+CREATE TABLE material (
+    id SERIAL PRIMARY KEY,
+    content TEXT,
+    user_id INTEGER REFERENCES users
+);
