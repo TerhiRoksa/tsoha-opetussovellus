@@ -1,6 +1,8 @@
 Opintomateriaali: <br>
 <br>
-{{ material }}
+{% for m in material %}
+{{ m.content }}
+{% endfor %}
 <br>
 <br>
 <br>

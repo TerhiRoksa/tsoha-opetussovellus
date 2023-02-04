@@ -44,10 +44,24 @@ def logout():
 def material():
     return render_template("material.html")
 
-@app.route("/result2", methods=["POST"])
+@app.route("/result2")
 def result2():
-    material = request.form["material"]
+    sql = "SELECT content FROM material"
+    result = db.session.execute(sql)
+    material = result.fetchall()    
     return render_template("result2.html", material=material)
+
+@app.route("/create_material", methods=["GET", "POST"])
+def create_material():
+    name = request.form["name"]
+    sql = "INSERT INTO courses (name) VALUES (:name) RETURNING id"
+    result = db.session.execute(sql, {"name":name})
+    course_id = result.fetchone()[0]
+    content = request.form["material"]
+    sql = "INSERT INTO material (content, course_id) VALUES (:content, :course_id)"    
+    db.session.execute(sql, {"content":content, "course_id":course_id})
+    db.session.commit()
+    return redirect("/result2")
 
 @app.route("/polls")
 def polls():
@@ -63,10 +77,6 @@ def new():
 
 @app.route("/create", methods=["POST"])
 def create():
-    user_id = users.user_id()
-    content = request.form["content"]
-    sql = "INSERT INTO material (content, user_id) VALUES (:content, :user_id)"    
-    db.session.execute(sql, {"content":content, "user_id":user_id})
     topic = request.form["topic"]
     sql = "INSERT INTO polls (topic) VALUES (:topic) RETURNING id"
     result = db.session.execute(sql, {"topic":topic})

@@ -5,6 +5,11 @@ CREATE TABLE Users (
 	usertype INTEGER
 );
 
+CREATE TABLE Courses (
+    id SERIAL PRIMARY KEY,
+    name TEXT
+);
+
 CREATE TABLE polls (
     id SERIAL PRIMARY KEY,
     topic TEXT
@@ -24,5 +29,5 @@ CREATE TABLE answers (
 CREATE TABLE material (
     id SERIAL PRIMARY KEY,
     content TEXT,
-    user_id INTEGER REFERENCES users
+    course_id INTEGER REFERENCES courses
 );
