@@ -13,6 +13,7 @@ CREATE TABLE Courses (
 CREATE TABLE polls (
     id SERIAL PRIMARY KEY,
     topic TEXT
+    material_id INTEGER REFERENCES material;
 );
 
 CREATE TABLE choices (

@@ -4,10 +4,18 @@
 <b>Tervetuloa luomaan oma verkkokurssi!</br>
 <br>
 {% if session.user_id %}
-<p>Olet kirjautunut nimellä {{ session.user_username }}</p>
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
 <br>
 <a href="/material">Luo verkkokurssi</a> 
 <br>
+<br>
+Osallistu kurssille:
+<br>
+<ul>
+    {% for course in courses %}
+    <li><a href = "/result2/{{ course.id }}">{{ course.name }}</a></li>
+    {% endfor %}
+</ul>
 <br>
  <a href="/logout">Kirjaudu ulos</a>
 {% else %}

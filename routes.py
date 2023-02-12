@@ -2,10 +2,11 @@ from app import app
 from flask import render_template, request, redirect, session
 from db import db
 import users
+import courses
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", courses=courses.get_courses())
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -44,12 +45,12 @@ def logout():
 def material():
     return render_template("material.html")
 
-@app.route("/result2")
-def result2():
-    sql = "SELECT content FROM material"
-    result = db.session.execute(sql)
-    material = result.fetchall()    
-    return render_template("result2.html", material=material)
+@app.route("/result2/<int:id>")
+def result2(id):
+    sql = "SELECT content FROM material WHERE id=:id"
+    result = db.session.execute(sql, {"id":id}) 
+    content = result.fetchone()[0]   
+    return render_template("result2.html",id=id, content=content)
 
 @app.route("/create_material", methods=["GET", "POST"])
 def create_material():
@@ -58,10 +59,11 @@ def create_material():
     result = db.session.execute(sql, {"name":name})
     course_id = result.fetchone()[0]
     content = request.form["material"]
-    sql = "INSERT INTO material (content, course_id) VALUES (:content, :course_id)"    
-    db.session.execute(sql, {"content":content, "course_id":course_id})
+    sql = "INSERT INTO material (content, course_id) VALUES (:content, :course_id) RETURNING id"    
+    result = db.session.execute(sql, {"content":content, "course_id":course_id})
+    material_id = result.fetchone()[0]
     db.session.commit()
-    return redirect("/result2")
+    return redirect("/result2/" + str(material_id))
 
 @app.route("/polls")
 def polls():
