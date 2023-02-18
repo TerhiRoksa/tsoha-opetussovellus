@@ -1,19 +1,19 @@
-CREATE TABLE Users (
+CREATE TABLE users (
 	id SERIAL PRIMARY KEY, 
 	username TEXT UNIQUE, 
 	password TEXT, 	
 	usertype INTEGER
 );
 
-CREATE TABLE Courses (
+CREATE TABLE courses (
     id SERIAL PRIMARY KEY,
     name TEXT
 );
 
 CREATE TABLE polls (
     id SERIAL PRIMARY KEY,
-    topic TEXT
-    course_id INTEGER REFERENCES courses
+    topic TEXT,
+    course_id INTEGER REFERENCES courses,
     answer TEXT
 );
 
