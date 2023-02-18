@@ -1,12 +1,14 @@
 <title>Opetussovellus</title>
 <h1>Opetussovellus</h1>
-<br>
-<b>Tervetuloa luomaan oma verkkokurssi!</br>
-<br>
 {% if session.user_id %}
-<p>Olet kirjautunut nimellä {{ session.username }}</p>
-<br>
-<a href="/material">Luo verkkokurssi</a> 
+<h3>Tervetuloa {{ session.user_username }}!</h3>
+</ul>
+{% if session.user_usertype == 2 %}
+<p>Olet kirjautunut opettajana ja voit luoda täällä omia verkkokursseja tai kokeilla olemassa olevia kursseja.</p>
+<ul>
+    <li> <a href="/material">Luo verkkokurssi</a> </li>
+</ul>
+{% endif %}
 <br>
 <br>
 Osallistu kurssille:

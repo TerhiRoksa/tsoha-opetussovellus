@@ -1,13 +1,24 @@
-<b>Verkkokurssi</b>
+<!DOCTYPE html>
+<p>
+<b>Valitse kysymys</b>
+<ul>
+    {% for poll in polls %}
+    <li><a href = "/polls/{{ poll.id }}">{{ poll.topic }}</a></li>
+    {% endfor %}
+</ul>
+
+Kysymys: {{ topic }} <br>
+<a href="/poll/{{ id }}">Vastaa kysymykseen</a> |
+<a href="/result/{{ id }}">Näytä vastaukset</a> <br>
+<p>
 <hr>
+<p>
+{% if session.user_usertype == 2 %}
 <a href="/new">Tee uusi kysymys</a>
+{% endif %}
 <br>
-<a href="/result2">Takaisin opintomateriaaliin</a>
-<hr>
-{% for poll in polls %}
-{{poll.content}}
-Kysymys: {{ poll.topic }} <br>
-<a href="/poll/{{ poll.id }}">Vastaa kysymykseen</a> |
-<a href="/result/{{ poll.id }}">Näytä vastaukset</a> <br>
-<hr>
-{% endfor %}
+<br>
+<a href="/">Takaisin etusivulle</a>
+
+
+

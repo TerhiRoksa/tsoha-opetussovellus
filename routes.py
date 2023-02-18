@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template, request, redirect, session
 from db import db
+from sqlalchemy.sql import text
 import users
 import courses
 
@@ -28,9 +29,10 @@ def register():
         username = request.form["username"]  
         password1 = request.form["password1"]
         password2 = request.form["password2"]
+        usertype = request.form["usertype"]
         if password1 != password2:
             return render_template("error.html", message="Salasanat eroavat")
-        if users.register(username, password1):
+        if users.register(username, password1, usertype):
             return redirect("/")
         else:
             return render_template("error.html", message="Väärä tunnus tai salasana")
@@ -65,23 +67,28 @@ def create_material():
     db.session.commit()
     return redirect("/result2/" + str(material_id))
 
-@app.route("/polls")
-def polls():
-    sql = "SELECT id, topic FROM polls ORDER BY id DESC"
-    result = db.session.execute(sql)
-    polls = result.fetchall()
-    return render_template("polls.html", polls=polls)
+@app.route("/polls/<int:id>")
+def polls(id):
+    sql = "SELECT id, topic FROM polls WHERE id=:id"
+    result = db.session.execute(sql, {"id":id})
+    topic = result.fetchone()
+    return render_template("polls.html", id=id, topic=topic, polls=courses.get_polls())
 
 @app.route("/new")
 def new():
     return render_template("new.html")
 
 
-@app.route("/create", methods=["POST"])
+@app.route("/create", methods=["GET", "POST"])
 def create():
+    name = request.form["name"]
+    sql = "SELECT id FROM courses where name=:name"
+    result = db.session.execute(sql, {"name":name})
+    course_id = result.fetchone()[0]
     topic = request.form["topic"]
-    sql = "INSERT INTO polls (topic) VALUES (:topic) RETURNING id"
-    result = db.session.execute(sql, {"topic":topic})
+    answer = request.form["answer"]
+    sql = "INSERT INTO polls (topic, course_id, answer) VALUES (:topic, :course_id, :answer) RETURNING id"
+    result = db.session.execute(sql, {"topic":topic, "course_id":course_id, "answer":answer})
     poll_id = result.fetchone()[0]
     choices = request.form.getlist("choice")
     for choice in choices:
@@ -89,7 +96,7 @@ def create():
             sql = "INSERT INTO choices (poll_id, choice) VALUES (:poll_id, :choice)"
             db.session.execute(sql, {"poll_id":poll_id, "choice":choice})
     db.session.commit()
-    return redirect("/polls")
+    return redirect("/polls/" + str(course_id))
 
 @app.route("/poll/<int:id>")
 def poll(id):
@@ -113,12 +120,25 @@ def answer():
     
 @app.route("/result/<int:id>")
 def result(id):
-    sql = "SELECT topic FROM polls WHERE id=:id"
+    sql = "SELECT id, topic FROM polls WHERE id=:id"
     result = db.session.execute(sql, {"id":id})
-    topic = result.fetchone()[0]
+    topic = result.fetchone()[1]
     sql = "SELECT c.choice, COUNT(a.id) FROM choices c LEFT JOIN answers a " \
           "ON c.id=a.choice_id WHERE c.poll_id=:poll_id GROUP BY c.id"
     result = db.session.execute(sql, {"poll_id":id})
     choices = result.fetchall()
-    return render_template("result.html", topic=topic, choices=choices)
+    sql = "SELECT answer FROM polls WHERE id=:id"
+    result = db.session.execute(text(sql), {"id":id})
+    answer = result.fetchone()[0]
+    return render_template("result.html", id=id, answer=answer, topic=topic, choices=choices)
 
+@app.route("/statistics/<int:id>")
+def statistics(id):
+    sql = "SELECT answer FROM polls WHERE id=:id"
+    result = db.session.execute(text(sql), {"id":id})
+    answer = result.fetchone()[0]
+    sql = "SELECT c.choice FROM choices c RIGHT JOIN answers a " \
+          "ON c.id=a.choice_id ORDER BY a.id DESC"
+    result = db.session.execute(sql, {"id":id})
+    choice = result.fetchone()[0]
+    return render_template("statistics.html", id=id, answer=answer, choice=choice, students=courses.get_students())

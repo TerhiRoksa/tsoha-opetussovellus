@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<title>Tilastot</title>
+
+Tämä on oikea vastaus: {{answer}}
+<br>
+Sinun vastaus: {{choice}}
+<br>
+<br>
+{% if session.user_usertype == 2 %}
+Opiskelijat:
+<ul>
+    {% for student in students %}
+    <li><a>{{ student.username }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}

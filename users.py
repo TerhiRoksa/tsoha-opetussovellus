@@ -5,7 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 
 def login(username, password):
-    sql = "SELECT id, password FROM users WHERE username=:username"
+    sql = "SELECT id, username, password, usertype FROM users WHERE username=:username"
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if not user:
@@ -13,6 +13,8 @@ def login(username, password):
     else:
         if check_password_hash(user.password, password):
             session["user_id"] = user.id
+            session["user_username"] = username
+            session["user_usertype"] = user[3]
             return True
         else:
             return False
@@ -23,11 +25,11 @@ def user_id():
 def logout():
     del session["user_id"]
 
-def register(username, password):
+def register(username, password, usertype):
     hash_value = generate_password_hash(password)
     try:
-        sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
-        db.session.execute(sql, {"username":username, "password":hash_value})
+        sql = "INSERT INTO users (username, password, usertype) VALUES (:username, :password, :usertype)"
+        db.session.execute(sql, {"username":username, "password":hash_value, "usertype":usertype})
         db.session.commit()
     except:
         return False

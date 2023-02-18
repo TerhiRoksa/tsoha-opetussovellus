@@ -1,11 +1,17 @@
 
 Opintomateriaali: <br>
 <br>
+{{ name }}
+<br>
 {{ content }}
 <br>
 <br>
+<a href="/polls/{{ id }}">Siirry vastaamaan kysymyksiin</a>
 <br>
-<a href="/new">Luo materiaalista kysymyksiä</a> <br>
 <br>
 <br>
-<a href="/polls">Siirry vastaamaan kysymyksiin</a> <br>
+{% if session.user_usertype == 2 %}
+
+<a href="/new">Luo materiaalista kysymyksiä</a>
+
+{% endif %}
