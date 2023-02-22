@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Tilastot{% endblock %}
+{% block content %}
 <title>Tilastot</title>
 
 Tämä on oikea vastaus: {{answer}}
@@ -14,3 +17,4 @@ Opiskelijat:
     {% endfor %}
 </ul>
 {% endif %}
+{% endblock %}

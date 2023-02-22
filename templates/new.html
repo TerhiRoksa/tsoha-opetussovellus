@@ -1,4 +1,6 @@
-
+{% extends "layout.html" %}
+{% block title %}Etusivu{% endblock %}
+{% block content %}
 <form action="/create" method="POST">
 <br>
 <p>Kurssin nimi:<br>
@@ -17,3 +19,4 @@
 <input type="text" name="choice"></p>
 <input type="submit" value="Luo kysymys">
 </form>
+{% endblock %}

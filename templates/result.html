@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Tulossivu{% endblock %}
+{% block content %}
 <title>Tulossivu</title>
 {{ topic }}
 <hr>
@@ -20,3 +23,4 @@ function hello() {
 <br>
 <br>
 <a href="/statistics/{{ id }}">Tilastot</a>
+{% endblock %}

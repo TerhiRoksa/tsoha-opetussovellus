@@ -1,3 +1,6 @@
+{% extends "layout.html" %}
+{% block title %}Materiaali{% endblock %}
+{% block content %}
 <form action="/create_material" method="POST">
 <br>
 Anna kurssille nimi: <br>
@@ -6,7 +9,8 @@ Anna kurssille nimi: <br>
 <br>
 
 Tähän voit lisätä opiskelumateriaalia: <br>
-<textarea name="material" rows="6" cols="50"></textarea>
+<textarea name="material" rows="12" cols="80"></textarea>
 <p>
 <input type="submit" value="Valmis">
 </form>
+{% endblock %}

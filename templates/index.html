@@ -1,5 +1,7 @@
-<title>Opetussovellus</title>
-<h1>Opetussovellus</h1>
+{% extends "layout.html" %}
+{% block title %}Etusivu{% endblock %}
+{% block content %}
+
 {% if session.user_id %}
 <h3>Tervetuloa {{ session.user_username }}!</h3>
 </ul>
@@ -23,6 +25,7 @@ Osallistu kurssille:
 {% else %}
 <a href="/login">Kirjaudu sisään</a>
 {% endif %}
+{% endblock %}
 
 
 

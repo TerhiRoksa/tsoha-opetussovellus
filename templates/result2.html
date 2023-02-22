@@ -1,4 +1,6 @@
-
+{% extends "layout.html" %}
+{% block title %}Opintomateriaali{% endblock %}
+{% block content %}
 Opintomateriaali: <br>
 <br>
 {{ name }}
@@ -15,3 +17,4 @@ Opintomateriaali: <br>
 <a href="/new">Luo materiaalista kysymyksiä</a>
 
 {% endif %}
+{% endblock %}

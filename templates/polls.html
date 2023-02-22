@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Kysymykset{% endblock %}
+{% block content %}
 <p>
 <b>Valitse kysymys</b>
 <ul>
@@ -16,9 +19,6 @@ Kysymys: {{ topic }} <br>
 {% if session.user_usertype == 2 %}
 <a href="/new">Tee uusi kysymys</a>
 {% endif %}
-<br>
-<br>
-<a href="/">Takaisin etusivulle</a>
-
+{% endblock %}
 
 
