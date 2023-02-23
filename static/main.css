@@ -1,10 +1,12 @@
 body {
     margin: auto;
-    max-width: 45em;
+    max-width: 60em;
     font-family: 'Helvetica', 'Arial', sans-serif;
     background: black;
     animation-name: color;
-    animation-duration: 1s;
+    animation-duration: 8s;
+    animation-delay: 4s;
+    animation-timing-function: ease-in-out;
 }
 
     @keyframes color {
@@ -16,23 +18,22 @@ body {
 .header {
     background: orchid;
     font-weight: bold;
-    padding: 0.3em 2em;
-    font-size: 1.5em;
-    border-radius: .6em
+    padding: 0.3em 0.5em;
+    font-size: 1.2em;
+    border-radius: .1em
 }
 
 .content {
     background: #e59ae2;
     padding: 1.5em 2em;
-    border-radius: .6em
+    padding-bottom: 10em;
+    border-radius: .1em
    
 }
 
 nav li {
     display: inline-block;
-    padding: .5em;
-    background: #eaaee8;
-    border-radius: .5em;
+    list-style-type: none;
     margin: .2em;
 
 }
