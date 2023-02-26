@@ -87,11 +87,11 @@ def create_material():
         content = request.form["material"]
         if len(content) < 1 or len(content) > 5000:
             return render_template("error.html", message="Materiaalin tulee olla vähintään 1 ja enintään 5000 merkkiä.")
-        sql = "INSERT INTO material (content, course_id) VALUES (:content, :course_id) RETURNING id"    
+        sql = "INSERT INTO material (content, course_id) VALUES (:content, :course_id) RETURNING course_id"    
         result = db.session.execute(sql, {"content":content, "course_id":course_id})
-        material_id = result.fetchone()[0]
+        course_id = result.fetchone()[0]
         db.session.commit()
-        return redirect("/result2/" + str(material_id))
+        return redirect("/result2/" + str(course_id))
     if not allow: 
         return render_template("error.html", message="Sinulla ei ole oikeutta nähdä sivua")
 

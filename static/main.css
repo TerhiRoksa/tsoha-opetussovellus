@@ -45,9 +45,11 @@ nav li a {
 }
 
 nav li:hover {
-    background-color: rgb(226, 226, 226);
+    text-decoration: underline;
+
 }
 
 nav ul {
     margin: .2em;
 }
+
