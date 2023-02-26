@@ -18,5 +18,6 @@
 <p>Vastausvaihtoehto 4:<br>
 <input type="text" name="choice"></p>
 <input type="submit" value="Luo kysymys">
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 {% endblock %}
