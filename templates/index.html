@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 {% block title %}Etusivu{% endblock %}
 {% block content %}
-
 {% if session.user_id %}
 <h3>Tervetuloa {{ session.user_username }}!</h3>
 </ul>
@@ -22,29 +21,20 @@ Osallistu kurssille:
 </ul>
 <br>
 {% if session.user_usertype == 2 %}
-
-
 <form action="/remove" method="post">
-
-<p>Minkä kurssin haluat poistaa?</p>
-
+<p>Opettajana voit poistaa kursseja. Valitse kurssi, jonka haluat poistaa?</p>
 {% for course in courses %}
-
 <input type="radio" name="course" value="{{ course.id }}"> {{ course.name }} <br>
-
 {% endfor %}
-
 <p>
-
+Oletko varma, että haluat poistaa kaikki kurssin tiedot?
+<br>
+<br>
 <input type="submit" value="Poista">
-
 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-
 </form>
 {% endif %}
 {% else %}
-
-
 <b>Tee oma verkkokurssi tai osallistu kurssille.<b>
 <br>
 <br>

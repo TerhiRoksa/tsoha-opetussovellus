@@ -87,11 +87,14 @@ def create_material():
         allow = True
         users.check_csrf()
         name = request.form["name"]
-        if len(name) < 1 or len(name) > 200:
-            return render_template("error.html", message="Nimen tulee olla vähintään 1 ja enintään 200 merkkiä pitkä.")
-        sql = "INSERT INTO courses (name, visible) VALUES (:name, true) RETURNING id"
-        result = db.session.execute(sql, {"name":name})
-        course_id = result.fetchone()[0]
+        if len(name) < 1 or len(name) > 50:
+            return render_template("error.html", message="Nimessä tulee olla 1-50 merkkiä.")
+        try:
+            sql = "INSERT INTO courses (name, visible) VALUES (:name, true) RETURNING id"
+            result = db.session.execute(sql, {"name":name})
+            course_id = result.fetchone()[0]
+        except:
+            return render_template("error.html", message="Onko samanniminen kurssi jo olemassa?")
         content = request.form["material"]
         if len(content) < 1 or len(content) > 5000:
             return render_template("error.html", message="Materiaalin tulee olla vähintään 1 ja enintään 5000 merkkiä.")
