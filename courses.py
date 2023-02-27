@@ -1,7 +1,7 @@
 from db import db
 
 def get_courses():
-    sql = "select id, name from courses order by name"
+    sql = "select id, name from courses where visible=true order by name"
     return db.session.execute(sql).fetchall()
 
 def get_polls():
@@ -15,3 +15,8 @@ def get_answer():
 def get_students():
     sql = "select username from users where usertype != 2"
     return db.session.execute(sql).fetchall()
+
+def remove_course(course_id):
+    sql = "UPDATE courses SET visible=false WHERE id=:id"
+    db.session.execute(sql, {"id":course_id})
+    db.session.commit()

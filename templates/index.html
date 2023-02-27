@@ -21,7 +21,30 @@ Osallistu kurssille:
     {% endfor %}
 </ul>
 <br>
+{% if session.user_usertype == 2 %}
+
+
+<form action="/remove" method="post">
+
+<p>Minkä kurssin haluat poistaa?</p>
+
+{% for course in courses %}
+
+<input type="radio" name="course" value="{{ course.id }}"> {{ course.name }} <br>
+
+{% endfor %}
+
+<p>
+
+<input type="submit" value="Poista">
+
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+
+</form>
+{% endif %}
 {% else %}
+
+
 <b>Tee oma verkkokurssi tai osallistu kurssille.<b>
 <br>
 <br>

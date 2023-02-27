@@ -9,6 +9,14 @@ import courses
 def index():
     return render_template("index.html", courses=courses.get_courses())
 
+@app.route("/remove", methods=["GET", "POST"])
+def remove_course():
+    users.check_csrf()
+    if "course" in request.form:
+        course = request.form["course"]
+        courses.remove_course(course)
+    return redirect("/")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
@@ -81,7 +89,7 @@ def create_material():
         name = request.form["name"]
         if len(name) < 1 or len(name) > 200:
             return render_template("error.html", message="Nimen tulee olla vähintään 1 ja enintään 200 merkkiä pitkä.")
-        sql = "INSERT INTO courses (name) VALUES (:name) RETURNING id"
+        sql = "INSERT INTO courses (name, visible) VALUES (:name, true) RETURNING id"
         result = db.session.execute(sql, {"name":name})
         course_id = result.fetchone()[0]
         content = request.form["material"]
