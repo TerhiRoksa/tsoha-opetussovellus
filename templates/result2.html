@@ -11,10 +11,11 @@ Opintomateriaali: <br>
 <a href="/polls/{{ id }}">Siirry vastaamaan kysymyksiin</a>
 <br>
 <br>
-<br>
 {% if session.user_usertype == 2 %}
-
 <a href="/new">Luo materiaalista kysymyksiä</a>
-
 {% endif %}
+<br>
+<br>
+<hr>
+<button onclick="history.back()">Takaisin</button>
 {% endblock %}

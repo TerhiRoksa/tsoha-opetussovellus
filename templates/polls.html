@@ -3,22 +3,24 @@
 {% block title %}Kysymykset{% endblock %}
 {% block content %}
 <p>
-<b>Valitse kysymys</b>
+<b>Kysymykset</b>
 <ul>
-    {% for poll in polls %}
-    <li><a href = "/polls/{{ poll.id }}">{{ poll.topic }}</a></li>
+    {% for poll in topic %}
+    <li><a "/polls/{{ poll.id }}">{{ poll.topic }}</a></li>
+    <a href="/poll/{{ poll.id }}">Vastaa kysymykseen</a> |
+    <a href="/result/{{ poll.id }}">Näytä vastaukset</a> <br>
+    <br>
     {% endfor %}
 </ul>
-
-Kysymys: {{ topic }} <br>
-<a href="/poll/{{ id }}">Vastaa kysymykseen</a> |
-<a href="/result/{{ id }}">Näytä vastaukset</a> <br>
 <p>
 <hr>
 <p>
 {% if session.user_usertype == 2 %}
 <a href="/new">Tee uusi kysymys</a>
 {% endif %}
+<br>
+<br>
+<button onclick="history.back()">Takaisin</button>
 {% endblock %}
 
 

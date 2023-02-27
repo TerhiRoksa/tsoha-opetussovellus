@@ -101,10 +101,10 @@ def polls(id):
     user_id = users.user_id()   
     if user_id > 0:
         allow = True
-        sql = "SELECT id, topic FROM polls WHERE id=:id"
+        sql = "SELECT id, topic FROM polls WHERE course_id=:id"
         result = db.session.execute(sql, {"id":id})
-        topic = result.fetchone()
-        return render_template("polls.html", id=id, topic=topic, polls=courses.get_polls())
+        topic = result.fetchall()
+        return render_template("polls.html", id=id, topic=topic)
     if not allow:
         return render_template("error.html", message="Sinulla ei ole oikeutta nähdä sivua")
 

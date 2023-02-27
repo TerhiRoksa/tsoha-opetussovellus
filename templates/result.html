@@ -4,7 +4,7 @@
 {% block content %}
 <title>Tulossivu</title>
 {{ topic }}
-<hr>
+<br>
 <ul>
 {% for choice in choices %}
 <li> {{ choice.choice }}: {{ choice.count }} kpl
@@ -19,8 +19,10 @@ function hello() {
 <button onclick="hello()">Oikea vastaus</button>
 <br>
 <br>
-<a href="/polls/{{ id }}">Takaisin</a>
-<br>
+<hr>
 <br>
 <a href="/statistics/{{ id }}">Tilastot</a>
+<br>
+<br>
+<button onclick="history.back()">Takaisin</button>
 {% endblock %}
