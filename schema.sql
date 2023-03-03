@@ -27,6 +27,7 @@ CREATE TABLE choices (
 CREATE TABLE answers (
     id SERIAL PRIMARY KEY,
     choice_id INTEGER REFERENCES choices
+    user_id INTEGER REFERENCES users
 );
 
 CREATE TABLE material (

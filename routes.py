@@ -182,8 +182,8 @@ def answer():
         poll_id = request.form["id"]
         if "answer" in request.form:  
             choice_id = request.form["answer"]  
-            sql = "INSERT INTO answers (choice_id) VALUES (:choice_id)"
-            db.session.execute(sql, {"choice_id":choice_id})
+            sql = "INSERT INTO answers (choice_id, user_id) VALUES (:choice_id, :user_id)"
+            db.session.execute(sql, {"choice_id":choice_id, "user_id":user_id})
             db.session.commit()
         return redirect("/result/" + str(poll_id))
     if not allow:
@@ -199,7 +199,7 @@ def result(id):
         result = db.session.execute(sql, {"id":id})
         topic = result.fetchone()[1]
         sql = "SELECT c.choice, COUNT(a.id) FROM choices c LEFT JOIN answers a " \
-              "ON c.id=a.choice_id WHERE c.poll_id=:poll_id GROUP BY c.id"
+              "ON c.id=a.choice_id WHERE c.poll_id=:poll_id GROUP BY c.id order by c.id"
         result = db.session.execute(sql, {"poll_id":id})
         choices = result.fetchall()
         sql = "SELECT answer FROM polls WHERE id=:id"
@@ -218,10 +218,9 @@ def statistics(id):
         sql = "SELECT answer FROM polls WHERE id=:id"
         result = db.session.execute(text(sql), {"id":id})
         answer = result.fetchone()[0]
-        sql = "SELECT c.choice FROM choices c RIGHT JOIN answers a " \
-              "ON c.id=a.choice_id ORDER BY a.id DESC"
+        sql = "select a.id, a.user_id, c.choice from choices c, answers a where c.id=a.choice_id and c.poll_id=:id order by a.id desc"
         result = db.session.execute(sql, {"id":id})
-        choice = result.fetchone()[0]
-        return render_template("statistics.html", id=id, answer=answer, choice=choice, students=courses.get_students())
+        choice = result.fetchone()[2]
+        return render_template("statistics.html", id=id, answer=answer, choice=choice, students=courses.get_students(), points=courses.get_right_answers())
     if not allow:
         return render_template("error.html", message="Sinulla ei ole oikeutta nähdä sivua")
