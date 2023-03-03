@@ -6,12 +6,15 @@
 
 Tämä on oikea vastaus: {{answer}}
 <br>
-Sinun vastaus: 
-<!--{% if choice.user_id == session.user_id %}
-    {{ choice.choice }}
-{% endif %}-->
-{{ choice }}
+<br>
+Sinun vastaus/vastaukset:
+{% for c in choice %} 
+    {% if c.user_id == session.user_id %}
+        {{ c.choice }}
+    {% endif %}
+{% endfor %}
 
+<br>
 <br>
 {% set answer_count = {"count":0} %}
 {% for user in points %}
@@ -21,6 +24,7 @@ Sinun vastaus:
     {% endif %}
 {% endfor %}
 Olet vastannut {{ answer_count.count }} kertaa oikein!
+<br>
 <br>
 {% if session.user_usertype == 2 %}
 Opiskelijat:

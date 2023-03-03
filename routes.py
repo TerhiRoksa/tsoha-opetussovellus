@@ -220,7 +220,7 @@ def statistics(id):
         answer = result.fetchone()[0]
         sql = "select a.id, a.user_id, c.choice from choices c, answers a where c.id=a.choice_id and c.poll_id=:id order by a.id desc"
         result = db.session.execute(sql, {"id":id})
-        choice = result.fetchone()[2]
-        return render_template("statistics.html", id=id, answer=answer, choice=choice, students=courses.get_students(), points=courses.get_right_answers())
+        choice = result.fetchall()
+        return render_template("statistics.html", id=id, answer=answer, choice=choice, students=courses.get_students(), points=courses.get_right_answers())   
     if not allow:
         return render_template("error.html", message="Sinulla ei ole oikeutta nähdä sivua")
