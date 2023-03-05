@@ -3,7 +3,6 @@
 {% block title %}Tilastot{% endblock %}
 {% block content %}
 <title>Tilastot</title>
-
 Tämä on oikea vastaus: {{answer}}
 <br>
 <br>
@@ -13,7 +12,6 @@ Sinun vastaus/vastaukset:
         {{ c.choice }}
     {% endif %}
 {% endfor %}
-
 <br>
 <br>
 {% set answer_count = {"count":0} %}
