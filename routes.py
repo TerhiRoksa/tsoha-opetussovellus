@@ -49,7 +49,6 @@ def register():
         else:
             return render_template("error.html", message="Väärä tunnus tai salasana")
 
-
 @app.route("/logout")
 def logout():
     users.logout()
@@ -70,14 +69,11 @@ def result2(id):
     allow = False
     user_id = users.user_id()  
     if user_id > 0:
-        allow = True
-        sql = "SELECT content FROM material WHERE course_id=:id"
-        result = db.session.execute(sql, {"id":id}) 
-        content = result.fetchone()[0]   
+        allow = True 
+        content = courses.get_material(id)   
         return render_template("result2.html", id=id, content=content)
     if not allow:
         return render_template("error.html", message="Sinulla ei ole oikeutta nähdä sivua")
-
 
 @app.route("/create_material", methods=["GET", "POST"])
 def create_material():
@@ -89,19 +85,11 @@ def create_material():
         name = request.form["name"]
         if len(name) < 1 or len(name) > 50:
             return render_template("error.html", message="Nimessä tulee olla 1-50 merkkiä.")
-        try:
-            sql = "INSERT INTO courses (name, visible) VALUES (:name, true) RETURNING id"
-            result = db.session.execute(sql, {"name":name})
-            course_id = result.fetchone()[0]
-        except:
-            return render_template("error.html", message="Onko samanniminen kurssi jo olemassa?")
+        course_id = courses.create_course(name)
         content = request.form["material"]
         if len(content) < 1 or len(content) > 5000:
             return render_template("error.html", message="Materiaalin tulee olla vähintään 1 ja enintään 5000 merkkiä.")
-        sql = "INSERT INTO material (content, course_id) VALUES (:content, :course_id) RETURNING course_id"    
-        result = db.session.execute(sql, {"content":content, "course_id":course_id})
-        course_id = result.fetchone()[0]
-        db.session.commit()
+        courses.create_material(content, course_id)
         return redirect("/result2/" + str(course_id))
     if not allow: 
         return render_template("error.html", message="Sinulla ei ole oikeutta nähdä sivua")
@@ -112,9 +100,7 @@ def polls(id):
     user_id = users.user_id()   
     if user_id > 0:
         allow = True
-        sql = "SELECT id, topic FROM polls WHERE course_id=:id"
-        result = db.session.execute(sql, {"id":id})
-        topic = result.fetchall()
+        topic = courses.get_polls(id)
         return render_template("polls.html", id=id, topic=topic)
     if not allow:
         return render_template("error.html", message="Sinulla ei ole oikeutta nähdä sivua")
@@ -135,26 +121,20 @@ def create():
     name = request.form["name"]
     if len(name) < 1 or len(name) > 100:
         return render_template("error.html", message="Nimen tulee olla vähintään 1 ja enintään 100 merkkiä pitkä.")
-    sql = "SELECT id FROM courses where name=:name"
-    result = db.session.execute(sql, {"name":name})
-    course_id = result.fetchone()[0]
+    course_id = courses.get_course(name)
     topic = request.form["topic"]
     if len(topic) < 1 or len(topic) > 200:
         return render_template("error.html", message="Kysymyksen tulee olla vähintään 1 ja enintään 200 merkkiä pitkä.")
     answer = request.form["answer"]
     if len(answer) < 1 or len(answer) > 100:
             return render_template("error.html", message="Vastauksen tulee olla vähintään 1 ja enintään 100 merkkiä pitkä.")
-    sql = "INSERT INTO polls (topic, course_id, answer) VALUES (:topic, :course_id, :answer) RETURNING id"
-    result = db.session.execute(sql, {"topic":topic, "course_id":course_id, "answer":answer})
-    poll_id = result.fetchone()[0]
+    poll_id = courses.create_poll(topic, course_id, answer)
     choices = request.form.getlist("choice")
     for choice in choices:
         if len(choice) < 1 or len(choice) > 100:
             return render_template("error.html", message="Vastausvaihtoehdon tulee olla vähintään 1 ja enintään 100 merkkiä pitkä.")
         if choice != "":
-            sql = "INSERT INTO choices (poll_id, choice) VALUES (:poll_id, :choice)"
-            db.session.execute(sql, {"poll_id":poll_id, "choice":choice})
-    db.session.commit()
+            courses.create_choices(poll_id, choice)
     return redirect("/polls/" + str(course_id))
 
 @app.route("/poll/<int:id>")
@@ -163,12 +143,8 @@ def poll(id):
     user_id = users.user_id()
     if user_id > 0:
         allow = True
-        sql = "SELECT topic FROM polls WHERE id=:id"
-        result = db.session.execute(sql, {"id":id})
-        topic = result.fetchone()[0]
-        sql = "SELECT id, choice FROM choices WHERE poll_id=:id"
-        result = db.session.execute(sql, {"id":id})
-        choices = result.fetchall()
+        topic = courses.get_poll(id)
+        choices = courses.get_choice(id)
         return render_template("poll.html", id=id, topic=topic, choices=choices)
     if not allow:
         return render_template("error.html", message="Sinulla ei ole oikeutta nähdä sivua")
@@ -182,9 +158,7 @@ def answer():
         poll_id = request.form["id"]
         if "answer" in request.form:  
             choice_id = request.form["answer"]  
-            sql = "INSERT INTO answers (choice_id, user_id) VALUES (:choice_id, :user_id)"
-            db.session.execute(sql, {"choice_id":choice_id, "user_id":user_id})
-            db.session.commit()
+            courses.create_answer(choice_id, user_id)
         return redirect("/result/" + str(poll_id))
     if not allow:
         return render_template("error.html", message="Sinulla ei ole oikeutta nähdä sivua")    
@@ -195,16 +169,9 @@ def result(id):
     user_id = users.user_id()
     if user_id > 0:
         allow = True
-        sql = "SELECT id, topic FROM polls WHERE id=:id"
-        result = db.session.execute(sql, {"id":id})
-        topic = result.fetchone()[1]
-        sql = "SELECT c.choice, COUNT(a.id) FROM choices c LEFT JOIN answers a " \
-              "ON c.id=a.choice_id WHERE c.poll_id=:poll_id GROUP BY c.id order by c.id"
-        result = db.session.execute(sql, {"poll_id":id})
-        choices = result.fetchall()
-        sql = "SELECT answer FROM polls WHERE id=:id"
-        result = db.session.execute(text(sql), {"id":id})
-        answer = result.fetchone()[0]
+        topic = courses.get_topic(id)
+        choices = courses.get_choices(id)
+        answer = courses.get_answers(id)
         return render_template("result.html", id=id, answer=answer, topic=topic, choices=choices)
     if not allow:
         return render_template("error.html", message="Sinulla ei ole oikeutta nähdä sivua")
@@ -215,12 +182,8 @@ def statistics(id):
     user_id = users.user_id()
     if user_id > 0:
         allow = True
-        sql = "SELECT answer FROM polls WHERE id=:id"
-        result = db.session.execute(text(sql), {"id":id})
-        answer = result.fetchone()[0]
-        sql = "select a.id, a.user_id, c.choice from choices c, answers a where c.id=a.choice_id and c.poll_id=:id order by a.id desc"
-        result = db.session.execute(sql, {"id":id})
-        choice = result.fetchall()
+        answer = courses.get_answers(id)
+        choice = courses.get_your_answer(id)
         return render_template("statistics.html", id=id, answer=answer, choice=choice, students=courses.get_students(), points=courses.get_right_answers())   
     if not allow:
         return render_template("error.html", message="Sinulla ei ole oikeutta nähdä sivua")
