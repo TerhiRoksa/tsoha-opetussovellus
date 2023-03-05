@@ -9,11 +9,10 @@ Sovellukseen voi luoda käyttäjätunnuksen, kirjautua sisään ja ulos.
 Käyttäjät on eriytetty opettajiin ja oppilaisiin. 
 Opettajalla on enemmän toimintoja.
 Uuden verkkokurssin voi luoda. Siihen voi lisätä materiaalia ja kysymyksiä. 
-Kysymyksiin voi vastata. Sovelluksesta löytää oikean vastauksen kysymykseen. 
+Kysymyksiin voi vastata. Sovelluksesta löytää oikean vastauksen kysymykseen ja oman vastaukset.
+Sovellus laskee käyttäjän oikeat vastaukset.
 Opettaja näkee opiskelijat.
-Kurssia ei voi vielä poistaa. 
-Koodia ei ole vielä siistitty ja järjestetty.
-Tietoturva-asiat on kesken. 
+Opettaja voi poistaa kursseja.
 
 Sovellus on toteutettu Pythonilla Flask-kirjastolla käyttäen 
 PostgreSQL-tietokantaa, sekä GitHub- ja 
